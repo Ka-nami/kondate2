@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>今日の献立</title>
+<script src="js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="css/sample.css">
+</head>
+
+<body background="https://telesy.jp/wp-content/uploads/2020/06/one-piece_10.jpg">
+
+<header>
+<button id="startbtn"><img src="./img/barathie-.png" alt=""></button>
+</header>
+
+<div class="sanji" >
+    <img class="sanjii" src="./img/ryouri-removebg-preview.png" alt="">
+    <div id="rireki">
+        <h1>ご注文履歴</h1>
+        <div id="output" style="overflow: auto; height: 300px; width: 600px;">
+        <table id="list"></table>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+const a = ["オムライス","カレー","鯖の煮つけ","麻婆豆腐","瓦そば","ガレット","天津飯","肉じゃが","卵かけパスタ"];
+const len = a.length;
+
+let week   = ["日", "月", "火", "水", "木", "金", "土"];
+
+let now = new Date();
+let month = now.getMonth()+1; 
+let date = now.getDate();
+let day = now.getDay();
+let h = now.getHours();          //時
+let m = now.getMinutes();
+let s = now.getSeconds(); 
+let d = month + "-" + date + "(" + week[day] + ") " + h + ":" + m;
+
+$(window).load(function () {
+    if(document.getElementById("curtainLeft") === null){
+$('body').prepend('<img src="https://thumb.photo-ac.com/b9/b994b2c6ad102740cbd7ea7b8673a10d_t.jpeg" id="curtainLeft"></img>');
+    }
+    if(document.getElementById("curtainRight") === null){
+$('body').prepend('<img src="https://thumb.photo-ac.com/b9/b994b2c6ad102740cbd7ea7b8673a10d_t.jpeg" id="curtainRight"></img>');
+    }
+    $("#curtainLeft").stop().animate({width:'0',opacity:'0'}, 4000 );
+    $("#curtainRight").stop().animate({width:'0',opacity:'0'},4000 );
+    setTimeout('Eliminate()',5000);
+});
+function Eliminate() {
+    $('#curtainLeft').remove();
+    $('#curtainRight').remove();
+}
+
+$("#startbtn").on("click",function(){
+        location.reload();
+        for(let i=0; i<len; i++){
+        const r = Math.floor(Math.random()*a.length );
+        localStorage.setItem(d,a[r]);
+    }
+});
+
+const array =[];
+
+for(let i=0; i<localStorage.length; i++){
+    const key  = localStorage.key(i);
+    const value = localStorage.getItem(key);
+    const object = {date:key,menu:value}
+    array.push(object);
+}
+
+array.sort(function(a, b){
+return new Date(b.date) - new Date(a.date);
+});
+console.log(array);
+for(let i=0; i<array.length; i++){
+const html = '<tr><th>'+array[i].date+'</th><td>'+array[i].menu+'</td></tr>';
+$("#list").append(html);
+}
+
+// $(window).load(function () {
+//     if(document.getElementById("curtainLeft") === null){
+// $('body').prepend('<img src="https://thumb.photo-ac.com/b9/b994b2c6ad102740cbd7ea7b8673a10d_t.jpeg" id="curtainLeft"></img>');
+//     }
+//     if(document.getElementById("curtainRight") === null){
+// $('body').prepend('<img src="https://thumb.photo-ac.com/b9/b994b2c6ad102740cbd7ea7b8673a10d_t.jpeg" id="curtainRight"></img>');
+//     }
+//     $("#curtainLeft").stop().animate({width:'0',opacity:'0'}, 4000 );
+//     $("#curtainRight").stop().animate({width:'0',opacity:'0'},4000 );
+//     setTimeout('Eliminate()',5000);
+// });
+// function Eliminate() {
+//     $('#curtainLeft').remove();
+//     $('#curtainRight').remove();
+// }
+
+
+</script>
+
+<footer>
+</footer>
+</body>
+</html>
